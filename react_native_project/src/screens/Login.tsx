@@ -13,10 +13,10 @@ const loginValidationSchema = yup.object().shape({
   password: yup.string().required('Password is required'),
 });
 
-type LoginProps = {
+interface LoginProps {
   email: string;
   password: string;
-};
+}
 
 function Login(): JSX.Element {
   const [email, setEmail] = useState('');

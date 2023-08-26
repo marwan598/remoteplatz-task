@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {ButtonProps, Text, TouchableOpacity} from 'react-native';
 
-type Props = {
+interface Props extends ButtonProps {
   onPress: () => void;
   title: string;
-};
+}
 
 const Button = ({onPress, title}: Props) => {
   return (
