@@ -1,0 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import axios, {AxiosError} from 'axios';
+import apiManager from './apiManage';
+
+interface Credentials {
+  user: string;
+  pwd: string;
+}
+
+export const userRegister = async (data: Credentials) => {
+  try {
+    const result = await apiManager('/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data,
+    });
+    return result;
+  } catch (error: any | AxiosError) {
+    if (axios.isAxiosError(error)) {
+      return error.response?.data;
+    } else {
+      return 'Something went wrong Please try again';
+    }
+  }
+};

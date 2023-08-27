@@ -1,32 +1,21 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Welcome from '../screens/Welcome';
-import Login from '../screens/Login';
-import Register from '../screens/Register';
+import Home from '../screens/Home';
 
 export type RootStackParamList = {
-  Welcome: undefined;
-  Login: undefined;
-  Register: undefined;
+  Home: undefined;
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator(): JSX.Element {
   return (
-    <RootStack.Navigator screenOptions={{headerShown: false}}>
-      <RootStack.Screen name="Welcome" component={Welcome} />
-      <RootStack.Screen
-        options={{headerShown: true}}
-        name="Login"
-        component={Login}
-      />
-      <RootStack.Screen
-        options={{headerShown: true}}
-        name="Register"
-        component={Register}
-      />
+    <RootStack.Navigator
+      screenOptions={{
+        headerTitleAlign: 'center',
+      }}>
+      <RootStack.Screen name="Home" component={Home} />
     </RootStack.Navigator>
   );
 }

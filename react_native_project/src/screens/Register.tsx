@@ -1,18 +1,20 @@
 import {Field, Formik} from 'formik';
-import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
+import {View, Text, Alert} from 'react-native';
 import * as yup from 'yup';
 import Input from '../global/components/Input';
 import Button from '../global/components/Button';
+import {userRegister} from '../api/register';
+import {AxiosResponse} from 'axios';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {AuthStackParamList} from '../navigation/AuthNavigator';
 
 const registerValidationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Please enter valid email')
-    .required('Email is required'),
+  user: yup.string().required('Username is required'),
   password: yup
     .string()
-    .min(8, ({min}) => `Password must be at least ${min} characters`)
+    .min(6, ({min}) => `Password must be at least ${min} characters`)
     .required('Password is required'),
   confirmPassword: yup
     .string()
@@ -21,36 +23,39 @@ const registerValidationSchema = yup.object().shape({
 });
 
 interface RegisterProps {
-  email: string;
+  user: string;
   password: string;
   confirmPassword: string;
 }
 
 function Register(): JSX.Element {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigation = useNavigation<StackNavigationProp<AuthStackParamList>>();
 
-  const handleRegister = ({
-    email: emailInput,
+  const handleRegister = async ({
+    user: userInput,
     password: passwordInput,
-    confirmPassword: confirmPasswordInput,
   }: RegisterProps) => {
-    setEmail(emailInput);
-    setPassword(passwordInput);
-    setConfirmPassword(confirmPasswordInput);
-    console.log(email, password, confirmPassword);
+    userRegister({user: userInput, pwd: passwordInput}).then(
+      (result: string | AxiosResponse) => {
+        if (typeof result !== 'string' && result.status === 201) {
+          Alert.alert('User Successfully Registered you can now  login');
+          navigation.replace('Login');
+          userInput = '';
+          passwordInput = '';
+        }
+      },
+    );
   };
   return (
     <View className="flex-1 justify-center items-center">
       <Text className=" font-bold text-5xl text-black mb-10">Register</Text>
       <Formik
         validationSchema={registerValidationSchema}
-        initialValues={{email: '', password: '', confirmPassword: ''}}
+        initialValues={{user: '', password: '', confirmPassword: ''}}
         onSubmit={values => handleRegister(values)}>
         {({handleSubmit}) => (
           <>
-            <Field component={Input} name="email" placeholder="Email" />
+            <Field component={Input} name="user" placeholder="Username" />
             <Field
               component={Input}
               name="password"

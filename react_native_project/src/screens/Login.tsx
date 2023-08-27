@@ -1,34 +1,54 @@
-import React, {useState} from 'react';
-import {View, Text} from 'react-native';
-import Button from '../global/components/Button';
+import React, {useContext} from 'react';
+import {View, Text, Alert} from 'react-native';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AxiosResponse} from 'axios';
+
 import Input from '../global/components/Input';
+import Button from '../global/components/Button';
+import {userLogin} from '../api/login';
+import authContext from '../context/authContext';
+// import {useNavigation} from '@react-navigation/native';
+// import {StackNavigationProp} from '@react-navigation/stack';
+// import {AuthStackParamList} from '../navigation/AuthNavigator';
 
 const loginValidationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Please enter valid email')
-    .required('Email Address is Required'),
+  user: yup.string().required('Username is Required'),
   password: yup.string().required('Password is required'),
 });
 
 interface LoginProps {
-  email: string;
+  user: string;
   password: string;
 }
 
 function Login(): JSX.Element {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const {setAuthenticated} = useContext(authContext);
 
+  // const navigation = useNavigation<StackNavigationProp<AuthStackParamList>>();
   const handleLogin = ({
-    email: emailInput,
+    user: userInput,
     password: passwordInput,
   }: LoginProps) => {
-    setEmail(emailInput);
-    setPassword(passwordInput);
-    console.log(email, password);
+    userLogin({user: userInput, pwd: passwordInput})
+      .then(async (result: string | AxiosResponse) => {
+        if (typeof result !== 'string' && result.status === 200) {
+          await AsyncStorage.setItem(
+            'AccessToken',
+            result.data.accessToken,
+          ).then(() => {
+            setAuthenticated(true);
+          });
+          // navigation.navigate('Home');
+        } else {
+          console.log(result);
+          Alert.alert('Please check Username or password ');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   return (
@@ -36,11 +56,11 @@ function Login(): JSX.Element {
       <Text className=" font-bold text-5xl text-black mb-10">Login</Text>
       <Formik
         validationSchema={loginValidationSchema}
-        initialValues={{email: '', password: ''}}
+        initialValues={{user: '', password: ''}}
         onSubmit={values => handleLogin(values)}>
         {({handleSubmit}) => (
           <>
-            <Field component={Input} name="email" placeholder="Email" />
+            <Field component={Input} name="user" placeholder="Username" />
             <Field
               component={Input}
               name="password"

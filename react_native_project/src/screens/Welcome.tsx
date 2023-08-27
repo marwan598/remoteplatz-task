@@ -3,10 +3,10 @@ import {View, Text} from 'react-native';
 import Button from '../global/components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../navigation/RootNavigator';
+import {AuthStackParamList} from '../navigation/AuthNavigator';
 
 function Welcome(): JSX.Element {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<AuthStackParamList>>();
 
   return (
     <View className=" flex-1 justify-center items-center ">

@@ -14,6 +14,7 @@ const Input = (props: any) => {
     <View className=" h-12 w-full  mb-5 justify-center items-center">
       <View className={'h-12 w-4/5 p-5 rounded-full  justify-center border-2 '}>
         <TextInput
+          autoCapitalize="none"
           className="h-12 text-black"
           placeholderTextColor="#003f5c"
           onChangeText={text => onChange(name)(text)}
