@@ -47,8 +47,10 @@ function Register(): JSX.Element {
     );
   };
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text className=" font-bold text-5xl text-black mb-10">Register</Text>
+    <View className="flex-1 justify-center items-center  bg-darkBackground">
+      <Text className=" font-bold text-5xl text-white mb-10">
+        <Text className=" text-mYellow">R</Text>egister
+      </Text>
       <Formik
         validationSchema={registerValidationSchema}
         initialValues={{user: '', password: '', confirmPassword: ''}}

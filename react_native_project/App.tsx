@@ -5,6 +5,7 @@ import RootNavigator from './src/navigation/RootNavigator';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import authContext from './src/context/authContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {StatusBar} from 'react-native';
 
 function App(): JSX.Element {
   const [authenticated, setAuthenticated] = useState(false);
@@ -20,6 +21,7 @@ function App(): JSX.Element {
 
   return (
     <NavigationContainer>
+      <StatusBar barStyle="light-content" />
       <authContext.Provider value={{authenticated, setAuthenticated}}>
         {authenticated && token !== undefined ? (
           <RootNavigator />

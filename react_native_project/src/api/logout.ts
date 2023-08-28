@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import axios, {AxiosError} from 'axios';
-import apiManager from './apiManage';
+import {apiManager} from './apiManage';
 
 export const userLogout = async () => {
   try {

@@ -26,7 +26,6 @@ interface LoginProps {
 function Login(): JSX.Element {
   const {setAuthenticated} = useContext(authContext);
 
-  // const navigation = useNavigation<StackNavigationProp<AuthStackParamList>>();
   const handleLogin = ({
     user: userInput,
     password: passwordInput,
@@ -52,8 +51,10 @@ function Login(): JSX.Element {
   };
 
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text className=" font-bold text-5xl text-black mb-10">Login</Text>
+    <View className="flex-1 justify-center items-center  bg-darkBackground">
+      <Text className=" font-bold text-5xl text-white mb-10">
+        <Text className=" text-mYellow">L</Text>ogin
+      </Text>
       <Formik
         validationSchema={loginValidationSchema}
         initialValues={{user: '', password: ''}}

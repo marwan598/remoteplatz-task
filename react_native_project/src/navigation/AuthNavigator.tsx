@@ -17,9 +17,15 @@ function AuthNavigator(): JSX.Element {
   return (
     <AuthStack.Navigator
       screenOptions={{
-        headerTitleAlign: 'center',
+        headerTitle: '',
+        headerTransparent: true,
+        headerTintColor: 'white',
       }}>
-      <AuthStack.Screen name="Welcome" component={Welcome} />
+      <AuthStack.Screen
+        name="Welcome"
+        component={Welcome}
+        options={{headerShown: false}}
+      />
       <AuthStack.Screen name="Login" component={Login} />
       <AuthStack.Screen name="Register" component={Register} />
     </AuthStack.Navigator>

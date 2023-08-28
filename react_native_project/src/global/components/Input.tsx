@@ -12,11 +12,14 @@ const Input = (props: any) => {
 
   return (
     <View className=" h-12 w-full  mb-5 justify-center items-center">
-      <View className={'h-12 w-4/5 p-5 rounded-full  justify-center border-2 '}>
+      <View
+        className={
+          'h-12 w-4/5 p-5 rounded-full  justify-center border-2 border-white'
+        }>
         <TextInput
           autoCapitalize="none"
-          className="h-12 text-black"
-          placeholderTextColor="#003f5c"
+          className="h-12 text-textWhite"
+          placeholderTextColor="#D0CABD"
           onChangeText={text => onChange(name)(text)}
           onBlur={() => {
             setFieldTouched(name);

@@ -11,8 +11,8 @@ const Button = ({onPress, title}: Props) => {
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={onPress}
-      className=" bg-btnColor rounded-full py-3 my-5 w-40">
-      <Text className=" text-lg text-white font-bold self-center uppercase">
+      className=" bg-mYellow rounded-full py-3 my-5 w-60">
+      <Text className=" text-lg text-black font-bold self-center uppercase">
         {title}
       </Text>
     </TouchableOpacity>
