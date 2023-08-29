@@ -3,10 +3,10 @@ import * as Yup from "yup";
 
 import Input from "../global/components/Input";
 import Button from "../global/components/Button";
-import { useContext } from "react";
-import authContext from "../context/authContext";
+import { useEffect } from "react";
 import { userLogin } from "../api/login";
 import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 
 const schema = Yup.object().shape({
   user: Yup.string().required("Username is a required field"),
@@ -16,14 +16,20 @@ const schema = Yup.object().shape({
 });
 
 function Login() {
-  const { setAuthenticated } = useContext(authContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("AccessToken");
+    if (token) {
+      navigate("/Home", { replace: true });
+    }
+  }, [navigate]);
 
   const handleLogin = (user: string, password: string) => {
     userLogin({ user, pwd: password })
       .then((result: string | AxiosResponse) => {
         if (typeof result !== "string" && result.status === 200) {
           localStorage.setItem("AccessToken", result.data.accessToken);
-          setAuthenticated(true);
+          navigate("/Home", { replace: true });
         } else {
           console.log(result);
           alert("Please check Username or password ");

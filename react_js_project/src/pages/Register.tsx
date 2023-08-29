@@ -6,6 +6,7 @@ import Button from "../global/components/Button";
 import { userRegister } from "../api/register";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const schema = Yup.object().shape({
   user: Yup.string().required("Username is a required field"),
@@ -20,11 +21,18 @@ const schema = Yup.object().shape({
 function Register() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const token = localStorage.getItem("AccessToken");
+    if (token) {
+      navigate("/Home", { replace: true });
+    }
+  }, [navigate]);
+
   const handleRegister = (user: string, password: string) => {
     userRegister({ user, pwd: password }).then(
       (result: string | AxiosResponse) => {
         if (typeof result !== "string" && result.status === 201) {
-          navigate("/Login");
+          navigate("/Login", { replace: true });
           alert("User Successfully Registered you can now  login");
           user = "";
           password = "";
