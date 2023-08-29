@@ -3,6 +3,10 @@ import * as Yup from "yup";
 
 import Input from "../global/components/Input";
 import Button from "../global/components/Button";
+import { useContext } from "react";
+import authContext from "../context/authContext";
+import { userLogin } from "../api/login";
+import { AxiosResponse } from "axios";
 
 const schema = Yup.object().shape({
   user: Yup.string().required("Username is a required field"),
@@ -11,11 +15,25 @@ const schema = Yup.object().shape({
     .min(6, "Password must be at least 6 characters"),
 });
 
-const handleLogin = (user: string, password: string) => {
-  console.log(user, password);
-};
-
 function Login() {
+  const { setAuthenticated } = useContext(authContext);
+
+  const handleLogin = (user: string, password: string) => {
+    userLogin({ user, pwd: password })
+      .then((result: string | AxiosResponse) => {
+        if (typeof result !== "string" && result.status === 200) {
+          localStorage.setItem("AccessToken", result.data.accessToken);
+          setAuthenticated(true);
+        } else {
+          console.log(result);
+          alert("Please check Username or password ");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <div className="w-full   ">
       <div className=" flex flex-row justify-center items-center mb-10  ">

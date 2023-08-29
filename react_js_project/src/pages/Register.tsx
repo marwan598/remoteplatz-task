@@ -3,6 +3,9 @@ import * as Yup from "yup";
 
 import Input from "../global/components/Input";
 import Button from "../global/components/Button";
+import { userRegister } from "../api/register";
+import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 
 const schema = Yup.object().shape({
   user: Yup.string().required("Username is a required field"),
@@ -14,11 +17,21 @@ const schema = Yup.object().shape({
     .required("Confirm password is required"),
 });
 
-const handleSubmit = (user: string, password: string) => {
-  console.log(user, password);
-};
-
 function Register() {
+  const navigate = useNavigate();
+
+  const handleRegister = (user: string, password: string) => {
+    userRegister({ user, pwd: password }).then(
+      (result: string | AxiosResponse) => {
+        if (typeof result !== "string" && result.status === 201) {
+          navigate("/Login");
+          alert("User Successfully Registered you can now  login");
+          user = "";
+          password = "";
+        }
+      }
+    );
+  };
   return (
     <div className="w-full   ">
       <div className=" flex flex-row justify-center items-center mb-10  ">
@@ -33,7 +46,7 @@ function Register() {
         validationSchema={schema}
         initialValues={{ user: "", password: "", confirmPassword: "" }}
         onSubmit={(values) => {
-          handleSubmit(values.user, values.password);
+          handleRegister(values.user, values.password);
         }}
       >
         {({
