@@ -2,18 +2,43 @@ import { ButtonHTMLAttributes } from "react";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
+  logout?: boolean;
 }
-function Button({ onClick, title, type }: Props) {
+function Button({ onClick, title, type, logout }: Props) {
   return (
     <div>
       <button
-        className=" bg-yellow-500 hover:bg-yellow-600 text-black font-bold h-12 my-5 w-60 rounded-full"
+        className=" bg-yellow-500 hover:bg-yellow-600 text-black font-bold h-12 my-5 w-full rounded-full flex justify-center items-center"
         onClick={onClick}
         type={type}
       >
-        <p className=" text-lg text-black font-bold self-center uppercase">
+        <p
+          className={` text-black text-sm font-semibold self-center uppercase ${
+            logout && "md:flex hidden "
+          }`}
+        >
           {title}
         </p>
+
+        {logout && (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-5 h-5 ml-0 md:m-2"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 4.25A2.25 2.25 0 015.25 2h5.5A2.25 2.25 0 0113 4.25v2a.75.75 0 01-1.5 0v-2a.75.75 0 00-.75-.75h-5.5a.75.75 0 00-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 00.75-.75v-2a.75.75 0 011.5 0v2A2.25 2.25 0 0110.75 18h-5.5A2.25 2.25 0 013 15.75V4.25z"
+              clipRule="evenodd"
+            />
+            <path
+              fillRule="evenodd"
+              d="M19 10a.75.75 0 00-.75-.75H8.704l1.048-.943a.75.75 0 10-1.004-1.114l-2.5 2.25a.75.75 0 000 1.114l2.5 2.25a.75.75 0 101.004-1.114l-1.048-.943h9.546A.75.75 0 0019 10z"
+              clipRule="evenodd"
+            />
+          </svg>
+        )}
       </button>
     </div>
   );

@@ -1,11 +1,16 @@
 import { InputHTMLAttributes } from "react";
 
-function Input(props: InputHTMLAttributes<HTMLInputElement>) {
-  const { type, placeholder, onChange, onBlur, value, name, id } = props;
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  isNavBar?: boolean;
+}
+
+function Input(props: Props) {
+  const { type, placeholder, onChange, onBlur, value, name, id, isNavBar } =
+    props;
   return (
-    <div className="mb-4">
+    <div className={!isNavBar ? "mb-4" : ""}>
       <input
-        className="border rounded-full h-12 w-80 p-5 text-white mb-2 "
+        className="border rounded-full h-12 w-80 p-5 text-white"
         type={type}
         placeholder={placeholder}
         onChange={onChange}
