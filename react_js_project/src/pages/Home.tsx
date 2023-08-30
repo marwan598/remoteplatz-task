@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
 import Logo from "../global/components/Logo";
 import Button from "../global/components/Button";
 import { userLogout } from "../api/logout";
 import { AxiosResponse } from "axios";
-import { fetchMovies, movie } from "../api/moviesApi";
+import { fetchMovies, movie, searchMovies } from "../api/moviesApi";
 import Movies from "../global/components/Movies";
-import Input from "../global/components/Input";
+import SearchField from "../global/components/SearchField";
 
 function Home() {
   const navigate = useNavigate();
@@ -30,6 +31,25 @@ function Home() {
     }
   };
 
+  const handleMovieSearch = (value: string) => {
+    if (value && value.length > 2) {
+      searchMovies({
+        query: value,
+        include_adult: "false",
+        language: "en-US",
+        page: "1",
+      }).then((data) => {
+        if (data && data.results) {
+          setMovies(data.results);
+        }
+      });
+    } else {
+      getMovies();
+    }
+  };
+
+  const handleTextDebounce = useCallback(debounce(handleMovieSearch, 400), []);
+
   const handleLogout = () => {
     userLogout()
       .then(async (result: string | AxiosResponse) => {
@@ -52,7 +72,7 @@ function Home() {
         <a href="/Home">
           <Logo />
         </a>
-        <Input isNavBar />
+        <SearchField onChange={(e) => handleTextDebounce(e.target.value)} />
       </div>
       <div className=" flex flex-1 max-w-[100vw]  h-full overflow-x-scroll">
         <Movies data={movies} />
