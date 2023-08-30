@@ -106,7 +106,7 @@ function Register() {
                 errors.confirmPassword}
             </p>
             <div className="flex items-center justify-between">
-              <Button title="Login" type="submit" />
+              <Button title="Register" type="submit" />
             </div>
           </form>
         )}
